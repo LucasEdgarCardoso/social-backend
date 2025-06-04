@@ -15,7 +15,7 @@ import com.nulo.social.model.user.UserEntity;
 @Repository
 public interface UserRepository extends MongoRepository<UserEntity, ObjectId> {
 
-	@Query("{ 'user.email': ?0 }")
+	@Query("{ 'email': { $eq: ?0 }  }")
 	Optional<UserEntity> findByEmail(String email);
 	
 }

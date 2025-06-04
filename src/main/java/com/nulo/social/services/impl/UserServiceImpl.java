@@ -27,9 +27,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public UserEntity save(@Valid RecSaveUser recSaveUser) {
-		
 		if(repository.findByEmail(recSaveUser.email()).isPresent()) {
-			new ServiceException("Emails já pertence a outro usuário", HttpStatus.BAD_REQUEST);
+			throw new ServiceException("O E-mail informado já pertence a outro usuário", HttpStatus.BAD_REQUEST);
 		}
 		
 		UserEntity user = RecSaveUser.toEntity(recSaveUser);

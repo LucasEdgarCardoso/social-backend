@@ -2,8 +2,6 @@ package com.nulo.social.services;
 
 import java.util.List;
 
-import org.apache.coyote.BadRequestException;
-
 import com.nulo.social.model.user.RecSaveUser;
 import com.nulo.social.model.user.RecUpdateUser;
 import com.nulo.social.model.user.UserEntity;
@@ -13,7 +11,7 @@ import jakarta.validation.constraints.NotNull;
 
 public interface UserService {
 
-	UserEntity save(@Valid RecSaveUser recSaveUser) throws BadRequestException;
+	UserEntity save(@Valid RecSaveUser recSaveUser);
 
 	UserEntity update(@Valid RecUpdateUser recUpdateUser);
 

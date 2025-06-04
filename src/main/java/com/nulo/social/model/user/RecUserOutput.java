@@ -1,4 +1,4 @@
-package com.nulo.social.model.usuario;
+package com.nulo.social.model.user;
 
 import java.util.List;
 

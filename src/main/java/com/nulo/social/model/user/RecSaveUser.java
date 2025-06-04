@@ -1,4 +1,4 @@
-package com.nulo.social.model.usuario;
+package com.nulo.social.model.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;

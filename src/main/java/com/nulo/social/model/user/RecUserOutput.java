@@ -10,12 +10,12 @@ public record RecUserOutput(
 		Boolean deleted
 ) {
 	
-	public static RecUserOutput toRec(UserEntity user) {
-		return new RecUserOutput(user.getId().toHexString(), user.getName(), user.getEmail(), user.getBio(), user.getDeleted());
+	public RecUserOutput(UserEntity user) {
+		this(user.getId().toHexString(), user.getName(), user.getEmail(), user.getBio(), user.getDeleted());
 	}
 	
 	public static List<RecUserOutput> toRec(List<UserEntity> users) {
-		return users.stream().map(RecUserOutput::toRec).toList();
+		return users.stream().map(RecUserOutput::new).toList();
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.nulo.social.services;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.nulo.social.model.user.RecSaveUser;
 import com.nulo.social.model.user.RecUpdateUser;
@@ -15,9 +16,11 @@ public interface UserService {
 
 	UserEntity update(@Valid RecUpdateUser recUpdateUser);
 
-	List<UserEntity> list();
+	void executeLogicalDelete(@NotNull String userId);
 
-	void deleteLogically(@NotNull String userId);
+	Page<UserEntity> list(String nameFilter, Pageable pageRequest);
+
+	UserEntity getOne(String id);
 
 	
 }

@@ -1,9 +1,9 @@
 package com.nulo.social.services.impl;
 
-import java.util.List;
-
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +14,7 @@ import com.nulo.social.model.user.RecUpdateUser;
 import com.nulo.social.model.user.UserEntity;
 import com.nulo.social.repository.UserRepository;
 import com.nulo.social.services.UserService;
+import com.nulo.social.utils.MessageUtils;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -28,7 +29,7 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public UserEntity save(@Valid RecSaveUser recSaveUser) {
 		if(repository.findByEmail(recSaveUser.email()).isPresent()) {
-			throw new ServiceException("O E-mail informado já pertence a outro usuário", HttpStatus.BAD_REQUEST);
+			throw new ServiceException(MessageUtils.EMAIL_USED_BY_ANOTHER_USER, HttpStatus.BAD_REQUEST);
 		}
 		
 		UserEntity user = RecSaveUser.toEntity(recSaveUser);
@@ -38,30 +39,36 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public UserEntity update(@Valid RecUpdateUser recUpdateUser) {
-		UserEntity savedUser = repository.findById(new ObjectId(recUpdateUser.id()))
-				.orElseThrow(() -> new ServiceException("Usuário não encontrado", HttpStatus.NOT_FOUND));
-		
+		var userId = new ObjectId(recUpdateUser.id());
+		UserEntity savedUser = repository.findById(userId)
+				.orElseThrow(() -> new ServiceException(MessageUtils.USER_NOT_FOUND, HttpStatus.NOT_FOUND));
 		UserEntity newUser = RecUpdateUser.updateValues(savedUser, recUpdateUser);
-		return repository.save(newUser);
+		
+		repository.update(userId, newUser.getName(), newUser.getBio());
+		return newUser;
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	// TODO: Adicionar paginação e ordenação conforme doc
-	public List<UserEntity> list() {
-		return repository.findAll();
+	public Page<UserEntity> list(String nameFilter, Pageable pageRequest) {
+		return repository.findByNamePageable(nameFilter, pageRequest);
 	}
 	
 	@Override
 	@Transactional
-	public void deleteLogically(@NotNull String userId) {
+	public void executeLogicalDelete(@NotNull String userId) {
 		if (ObjectId.isValid(userId)) {
-			// TODO: Alterar o update para native Query do mongo?
-			repository.findById(new ObjectId(userId)).ifPresent(user -> {
-				user.setDeleted(Boolean.TRUE);
-				repository.save(user);
-			});
+			repository.deleteLogically(new ObjectId(userId));
 		}
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public UserEntity getOne(String id) {
+		if (!ObjectId.isValid(id)) {
+			throw new ServiceException(MessageUtils.INVALID_ID, HttpStatus.BAD_REQUEST);
+		}
+		return repository.findById(new ObjectId(id)).orElseThrow(() -> new ServiceException(MessageUtils.USER_NOT_FOUND, HttpStatus.NOT_FOUND));
 	}
 	
 }

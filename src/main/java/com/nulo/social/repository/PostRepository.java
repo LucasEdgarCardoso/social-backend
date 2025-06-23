@@ -1,8 +1,7 @@
 package com.nulo.social.repository;
 
-import com.nulo.social.model.post.PostEntity;
-import com.nulo.social.model.user.UserEntity;
-import jakarta.validation.constraints.NotNull;
+import java.util.Optional;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +10,9 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.Update;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import com.nulo.social.model.post.PostEntity;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
  * Interface de repositório para operações com a coleção de posts.
@@ -32,6 +33,6 @@ public interface PostRepository extends MongoRepository<PostEntity, ObjectId> {
 	@Update(pipeline = "{ $set: { 'deleted': true } }")
 	void deleteLogically(ObjectId id);
 
-	@Query("{ 'body': { $regex: ?0, $options: 'i' }, 'deleted': false }")
-	Page<PostEntity> findByBodyPageable(String body, Pageable pageRequest);
+	@Query("{ 'deleted': false }")
+	Page<PostEntity> findAllPageable(Pageable pageRequest);
 }

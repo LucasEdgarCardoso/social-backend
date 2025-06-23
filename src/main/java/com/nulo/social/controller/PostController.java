@@ -1,13 +1,26 @@
 package com.nulo.social.controller;
 
-import com.nulo.social.model.dto.PaginatedResponse;
-import com.nulo.social.model.post.*;
-import com.nulo.social.services.PostService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.nulo.social.model.dto.PaginatedResponse;
+import com.nulo.social.model.dto.RecPageRequest;
+import com.nulo.social.model.post.PostEntity;
+import com.nulo.social.model.post.RecPostOutput;
+import com.nulo.social.model.post.RecSavePost;
+import com.nulo.social.model.post.RecUpdatePost;
+import com.nulo.social.services.PostService;
+
+import jakarta.validation.Valid;
 
 
 /**
@@ -33,8 +46,8 @@ public class PostController {
 	}
 
 	@GetMapping
-	public ResponseEntity<PaginatedResponse<RecPostOutput>> list(@RequestBody @Valid RecListPost recListPost) {
-		Page<PostEntity> posts = postService.list(recListPost.body(), recListPost.pageRequest().toPageRequest());
+	public ResponseEntity<PaginatedResponse<RecPostOutput>> list(@RequestBody RecPageRequest pageRequest) {
+		Page<PostEntity> posts = postService.list(pageRequest.toPageRequest());
 		return ResponseEntity.ok().body(new PaginatedResponse<>(posts, post -> new RecPostOutput(post)));
 	}
 	
@@ -49,4 +62,11 @@ public class PostController {
 		postService.executeLogicalDelete(id);
 		return ResponseEntity.noContent().build();
 	}
+	
+	@PostMapping("/{id}")
+	public ResponseEntity<Object> like(@PathVariable String id) {
+		postService.like(id);
+		return ResponseEntity.ok().build();
+	}
+	
 }

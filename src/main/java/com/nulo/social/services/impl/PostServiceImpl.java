@@ -1,5 +1,13 @@
 package com.nulo.social.services.impl;
 
+import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.nulo.social.exception.ServiceException;
 import com.nulo.social.model.post.PostEntity;
 import com.nulo.social.model.post.RecSavePost;
@@ -7,13 +15,8 @@ import com.nulo.social.model.post.RecUpdatePost;
 import com.nulo.social.repository.PostRepository;
 import com.nulo.social.services.PostService;
 import com.nulo.social.utils.MessageUtils;
-import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.transaction.annotation.Transactional;
 
+@Service
 public class PostServiceImpl implements PostService {
 
     @Autowired
@@ -48,8 +51,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<PostEntity> list(String bodyFilter, Pageable pageRequest) {
-        return repository.findByBodyPageable(bodyFilter, pageRequest);
+    public Page<PostEntity> list(Pageable pageRequest) {
+        return repository.findAllPageable(pageRequest);
     }
 
     @Override
@@ -61,4 +64,11 @@ public class PostServiceImpl implements PostService {
         return repository.findById(new ObjectId(id)).orElseThrow(() -> new ServiceException(MessageUtils.USER_NOT_FOUND,
                                                                                             HttpStatus.NOT_FOUND));
     }
+
+	@Override
+	public void like(String id) {
+		var post = this.getOne(id);
+		post.setLikes(post.getLikes() + 1);
+		repository.save(post);
+	}
 }

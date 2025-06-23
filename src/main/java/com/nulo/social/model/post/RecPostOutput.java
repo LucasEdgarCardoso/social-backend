@@ -1,10 +1,6 @@
 package com.nulo.social.model.post;
 
-import com.nulo.social.model.comment.CommentEntity;
-import com.nulo.social.model.user.RecUserOutput;
-import com.nulo.social.model.user.UserEntity;
-import lombok.Data;
-
+import java.time.LocalDateTime;
 import java.util.List;
 
 public record RecPostOutput(
@@ -12,9 +8,8 @@ public record RecPostOutput(
         String author,
         String body,
         String[] tags,
-        Data createdAt,
+        LocalDateTime createdAt,
         int likes,
-        List<CommentEntity> comments,
         Boolean deleted
 ) {
 
@@ -25,7 +20,6 @@ public record RecPostOutput(
                 post.getTags(),
                 post.getCreatedAt(),
                 post.getLikes(),
-                post.getComments(),
                 post.getDeleted());
     }
 

@@ -1,24 +1,23 @@
 package com.nulo.social.model.post;
 
-import com.nulo.social.model.user.RecSaveUser;
-import com.nulo.social.model.user.UserEntity;
-import jakarta.validation.constraints.Email;
+import java.time.LocalDateTime;
+
+import org.bson.types.ObjectId;
+
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
 
 public record RecSavePost (
-@NotNull(message = "Body cannot be null") String body,
-
-String[] tags,
-
-Data createdAt
+		@NotNull(message = "body cannot be null") String body,
+		@NotNull(message = "authorId cannot be null") String authorId,
+		String[] tags
 ){
 
     public static PostEntity toEntity(RecSavePost recPost) {
         var post = new PostEntity();
         post.setBody(recPost.body);
         post.setTags(recPost.tags);
-        post.setCreatedAt(recPost.createdAt);
+        post.setAuthor(new ObjectId(recPost.authorId));
+        post.setCreatedAt(LocalDateTime.now());
         return post;
     }
 }

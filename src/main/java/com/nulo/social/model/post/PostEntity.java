@@ -1,15 +1,16 @@
 package com.nulo.social.model.post;
 
-import com.mongodb.lang.NonNull;
-import com.nulo.social.model.comment.CommentEntity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
+import com.mongodb.lang.NonNull;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
@@ -28,11 +29,11 @@ public class PostEntity {
 
     private String[] tags;
 
-    private Data createdAt;
+    private LocalDateTime createdAt;
 
     private int likes;
 
-    private List<CommentEntity> comments;
+//    private List<CommentEntity> comments;
 
     private Boolean deleted = false;
 }

@@ -10,6 +10,8 @@ public class MessageUtils {
 	// User
 	public static final String USER_NOT_FOUND = "Usuário não encontrado";
 	public static final String EMAIL_USED_BY_ANOTHER_USER = "O E-mail informado já pertence a outro usuário";
-	
+
+	// Post
+	public static final String POST_NOT_FOUND = "Post não encontrado";
 	
 }

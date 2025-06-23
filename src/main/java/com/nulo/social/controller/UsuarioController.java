@@ -40,7 +40,7 @@ public class UsuarioController {
 	}
 	
 	@PutMapping
-	public ResponseEntity<RecUserOutput> save(@RequestBody @Valid RecUpdateUser recUpdateUser) {
+	public ResponseEntity<RecUserOutput> update(@RequestBody @Valid RecUpdateUser recUpdateUser) {
 		UserEntity user = userService.update(recUpdateUser);
 		return ResponseEntity.ok().body(new RecUserOutput(user));
 	}

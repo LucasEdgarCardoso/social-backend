@@ -21,6 +21,5 @@ public interface UserService {
 	Page<UserEntity> list(String nameFilter, Pageable pageRequest);
 
 	UserEntity getOne(String id);
-
 	
 }

@@ -45,12 +45,12 @@ public class PostController {
 		return ResponseEntity.ok().body(new RecPostOutput(post));
 	}
 
-	@GetMapping
+	@PostMapping("/list")
 	public ResponseEntity<PaginatedResponse<RecPostOutput>> list(@RequestBody RecPageRequest pageRequest) {
 		Page<PostEntity> posts = postService.list(pageRequest.toPageRequest());
 		return ResponseEntity.ok().body(new PaginatedResponse<>(posts, post -> new RecPostOutput(post)));
 	}
-	
+
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> get(@PathVariable String id) {
 		PostEntity post = postService.getOne(id);

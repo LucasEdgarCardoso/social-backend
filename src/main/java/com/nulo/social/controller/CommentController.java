@@ -35,11 +35,11 @@ public class CommentController {
 		CommentEntity Comment = commentService.save(recSaveComment);
 		return ResponseEntity.ok().body(new RecCommentOutput(Comment));
 	}
-	
-	@GetMapping
+
+	@PostMapping("/list")
 	public ResponseEntity<PaginatedResponse<RecCommentOutput>> list(@RequestBody RecListComment rec) {
-		Page<CommentEntity> posts = commentService.list(rec.postId(), rec.pageRequest().toPageRequest());
-		return ResponseEntity.ok().body(new PaginatedResponse<>(posts, post -> new RecCommentOutput(post)));
+		Page<CommentEntity> comments = commentService.list(rec.postId(), rec.pageRequest().toPageRequest());
+		return ResponseEntity.ok().body(new PaginatedResponse<>(comments, c -> new RecCommentOutput(c)));
 	}
 	
 	@DeleteMapping("/{id}")

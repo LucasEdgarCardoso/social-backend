@@ -51,12 +51,20 @@ public class UserController {
 		return ResponseEntity.ok().body(new PaginatedResponse<>(users, user -> new RecUserOutput(user)));
 	}
 	
-	@GetMapping("/{email}")
-	public ResponseEntity<Object> get(@PathVariable String email) {
+    @GetMapping("/email/{email}")
+    public ResponseEntity<RecUserOutput> getByEmail(@PathVariable String email) {
 		UserEntity user = userService.getOneByEmail(email);
 		return ResponseEntity.ok().body(new RecUserOutput(user));
 	}
 	
+    @GetMapping("/{id}")
+    public ResponseEntity<RecUserOutput> getById(@PathVariable String id) {
+        System.out.println("PINGOU NO GET ID");
+        UserEntity user = userService.getOneById(id);
+        return ResponseEntity.ok()
+                .body(new RecUserOutput(user));
+    }
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> delete(@PathVariable String id) {
 		userService.executeLogicalDelete(id);

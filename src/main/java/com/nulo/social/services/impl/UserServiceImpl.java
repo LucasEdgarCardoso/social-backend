@@ -68,4 +68,11 @@ public class UserServiceImpl implements UserService {
 		return repository.findByEmail(email).orElseThrow(() -> new ServiceException(MessageUtils.USER_NOT_FOUND, HttpStatus.NOT_FOUND));
 	}
 	
+    @Override
+    @Transactional(readOnly = true)
+    public UserEntity getOneById(String id) {
+        return repository.findById(new ObjectId(id))
+                .orElseThrow(() -> new ServiceException(MessageUtils.USER_NOT_FOUND, HttpStatus.NOT_FOUND));
+    }
+
 }

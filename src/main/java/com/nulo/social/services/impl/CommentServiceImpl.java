@@ -43,8 +43,8 @@ public class CommentServiceImpl implements CommentService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public Page<CommentEntity> list(PageRequest pageRequest) {
-		return repository.findAll(pageRequest);
+	public Page<CommentEntity> list(String postId, PageRequest pageRequest) {
+		return repository.findAllByPostId(new ObjectId(postId), pageRequest);
 	}
 	
 	@Override

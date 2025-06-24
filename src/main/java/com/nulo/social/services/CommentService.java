@@ -12,10 +12,10 @@ public interface CommentService {
 
 	CommentEntity save(@Valid RecSaveComment recSaveComment);
 
-	Page<CommentEntity> list(PageRequest pageRequest);
-
 	void delete(String id);
 
 	void like(String id);
+
+	Page<CommentEntity> list(String postId, PageRequest pageRequest);
 
 }

@@ -51,9 +51,9 @@ public class UserController {
 		return ResponseEntity.ok().body(new PaginatedResponse<>(users, user -> new RecUserOutput(user)));
 	}
 	
-	@GetMapping("/{id}")
-	public ResponseEntity<Object> get(@PathVariable String id) {
-		UserEntity user = userService.getOne(id);
+	@GetMapping("/{email}")
+	public ResponseEntity<Object> get(@PathVariable String email) {
+		UserEntity user = userService.getOneByEmail(email);
 		return ResponseEntity.ok().body(new RecUserOutput(user));
 	}
 	

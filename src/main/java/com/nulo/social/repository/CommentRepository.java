@@ -3,6 +3,8 @@ package com.nulo.social.repository;
 import java.util.Optional;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -18,5 +20,8 @@ public interface CommentRepository extends MongoRepository<CommentEntity, Object
 	
 	@Query(FILTER_BY_ID_DELETED)
 	Optional<CommentEntity> findById(@NotNull ObjectId id);
+
+	@Query("{ 'post': { $eq: ?0 } }")
+	Page<CommentEntity> findAllByPostId(ObjectId postId, PageRequest pageRequest);
 	
 }

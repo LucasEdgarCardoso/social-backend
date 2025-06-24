@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nulo.social.model.comment.CommentEntity;
 import com.nulo.social.model.comment.RecCommentOutput;
+import com.nulo.social.model.comment.RecListComment;
 import com.nulo.social.model.comment.RecSaveComment;
 import com.nulo.social.model.dto.PaginatedResponse;
-import com.nulo.social.model.dto.RecPageRequest;
 import com.nulo.social.services.CommentService;
 
 import jakarta.validation.Valid;
@@ -37,8 +37,8 @@ public class CommentController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<PaginatedResponse<RecCommentOutput>> list(@RequestBody RecPageRequest pageRequest) {
-		Page<CommentEntity> posts = commentService.list(pageRequest.toPageRequest());
+	public ResponseEntity<PaginatedResponse<RecCommentOutput>> list(@RequestBody RecListComment rec) {
+		Page<CommentEntity> posts = commentService.list(rec.postId(), rec.pageRequest().toPageRequest());
 		return ResponseEntity.ok().body(new PaginatedResponse<>(posts, post -> new RecCommentOutput(post)));
 	}
 	

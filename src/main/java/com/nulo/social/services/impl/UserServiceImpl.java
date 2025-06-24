@@ -64,11 +64,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public UserEntity getOne(String id) {
-		if (!ObjectId.isValid(id)) {
-			throw new ServiceException(MessageUtils.INVALID_ID, HttpStatus.BAD_REQUEST);
-		}
-		return repository.findById(new ObjectId(id)).orElseThrow(() -> new ServiceException(MessageUtils.USER_NOT_FOUND, HttpStatus.NOT_FOUND));
+	public UserEntity getOneByEmail(String email) {
+		return repository.findByEmail(email).orElseThrow(() -> new ServiceException(MessageUtils.USER_NOT_FOUND, HttpStatus.NOT_FOUND));
 	}
 	
 }
